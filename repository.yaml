@@ -1,0 +1,4 @@
+# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
+name: LastTry Hassio Repo
+url: 'https://github.com/lasttry/hassio-rss-manager'
+maintainer: Ricardo Santos <ricardo@diasantos.com>
