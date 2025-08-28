@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment files
+.env
+.env.*
+
+# RSS Manager specific
+*.db
+*.sqlite3
+rssmanager/data/rss_items.json
+rssmanager/data/options.json
