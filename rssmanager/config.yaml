@@ -1,8 +1,8 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: RSS Manager
-version: "1.0.0"
+version: "1.0.18"
 slug: rssmanager
-description: Example add-on
+description: "Reads and stores RSS feed items for Lovelace display."
 url: "https://github.com/lasttry/hassio-rss-manager/tree/main/rssmanager"
 arch:
   - armhf
@@ -10,11 +10,27 @@ arch:
   - aarch64
   - amd64
   - i386
-init: false
-map:
-  - share:rw
-options:
-  message: "Hello world..."
+ports:
+  4567/tcp: 4567
 schema:
-  message: "str?"
-image: "ghcr.io/home-assistant/{arch}-addon-example"
+  debug: bool
+  torrentURL: str
+  torrentUser: str
+  torrentPass: str
+  folders:
+  - source: str
+    options: str?
+options:
+  debug: true
+  torrentURL: http://llfe01:8080/
+  torrentUser: "rsantos"
+  torrentPass: "g00f13me"
+  folders:
+  - source: /config
+
+panel_icon: mdi:puzzle
+panel_title: RSS Manager
+panel_admin: false
+ingress: true
+ingress_port: 4567
+ingress_stream: true
