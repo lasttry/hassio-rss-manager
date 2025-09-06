@@ -2,7 +2,7 @@ import json
 import os
 import logging
 import uuid
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, Response
 import requests
 from io import BytesIO
 from PIL import Image
@@ -151,7 +151,10 @@ def get_item(id):
 def get_all_items():
     with open_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM items")
+        cursor.execute("""
+            SELECT id, feed, title, link, guid, cover_url, description, status, attrs
+            FROM items
+        """)
         rows = cursor.fetchall()
         columns = [desc[0] for desc in cursor.description]
     return [dict(zip(columns, row)) for row in rows]
@@ -307,6 +310,13 @@ def send_to_qbittorrent(item):
 
     return True
 
+@app.route("/rss/poster/<item_id>")
+def get_poster(item_id):
+    item = get_item(item_id)
+    if not item or not item.get("poster_b64"):
+        return "", 404
+    img_data = base64.b64decode(item["poster_b64"])
+    return Response(img_data, mimetype="image/jpeg")
 
 @app.route("/rss/update", methods=["POST"])
 def manual_update():
