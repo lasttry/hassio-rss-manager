@@ -37,9 +37,10 @@ function renderItems(items) {
          </a>`
       : '';
 
-    const coverImage = item.poster_b64
+    console.log(item.has_image)
+    const coverImage = item.has_image
       ? `<div class="cover-container">
-          <img src="/rss/poster/${item.id}" alt="Cover Image" class="cover-image">
+          <img src="rss/poster/${item.id}" alt="Cover Image" class="cover-image">
         </div>`
       : '';
 

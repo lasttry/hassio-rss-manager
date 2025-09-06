@@ -152,7 +152,20 @@ def get_all_items():
     with open_db() as conn:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT id, feed, title, link, guid, cover_url, description, status, attrs
+            SELECT
+                id,
+                feed,
+                title,
+                link,
+                guid,
+                cover_url,
+                description,
+                status,
+                attrs,
+                CASE
+                    WHEN poster_b64 IS NOT NULL AND LENGTH(poster_b64) > 0 THEN 1
+                    ELSE 0
+                END AS has_image
             FROM items
         """)
         rows = cursor.fetchall()
@@ -199,10 +212,12 @@ def get_poster_image(imdbid):
         logging.info(f"Getting info from {imdbid}")
         if not imdbid or imdbid.strip().lower() == 'null':
             return None, None
+
         r = requests.get(f"http://www.omdbapi.com/?i={imdbid}&apikey={OMDBAPIKEY}")
         data = r.json()
         if "Poster" not in data or data["Poster"] == "N/A":
             return None, None
+
         image_url = data["Poster"]
         plot = data.get("Plot", "")
 
@@ -213,8 +228,8 @@ def get_poster_image(imdbid):
         buffered = BytesIO()
         img.save(buffered, format="JPEG", quality=80)
         img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-        logging.info(f"Movie plot: {plot}")
-        return f"data:image/jpeg;base64,{img_base64}", plot
+        print(f"base64img: {img_base64}")
+        return img_base64, plot  # ✅ BASE64 STRING
     except Exception as e:
         logging.warning(f"❌ IMDb metadata error: {e}")
         return None, None
@@ -316,7 +331,8 @@ def get_poster(item_id):
     if not item or not item.get("poster_b64"):
         return "", 404
     img_data = base64.b64decode(item["poster_b64"])
-    return Response(img_data, mimetype="image/jpeg")
+    logging.debug(img_data)
+    return Response(f"data:image/jpeg;base64,{img_data}", mimetype="image/jpeg")
 
 @app.route("/rss/update", methods=["POST"])
 def manual_update():
