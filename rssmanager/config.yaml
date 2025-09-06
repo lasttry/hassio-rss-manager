@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: RSS Manager
-version: 1.0.32
+version: 1.0.33
 slug: rssmanager
 description: Reads and stores RSS feed items for Lovelace display.
 url: https://github.com/lasttry/hassio-rss-manager/tree/main/rssmanager
