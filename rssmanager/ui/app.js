@@ -101,7 +101,11 @@ function deleteRSS(item) {
         showErrorOnItem(id, errText || 'Unknown error');
         return;
       }
-      fetchItems(); // success
+      // 🔁 Remove o item visualmente sem recarregar tudo
+      const itemElement = document.getElementById(`rss-item-${itemId}`);
+      if (itemElement) itemElement.remove();
+
+      // fetchItems(); // success
     })
     .catch(err => {
       showErrorOnItem(id, err.message || 'Request failed');
