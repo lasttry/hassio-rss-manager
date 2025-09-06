@@ -39,7 +39,7 @@ function renderItems(items) {
 
     const coverImage = item.poster_b64
       ? `<div class="cover-container">
-          <img src="${ item.poster_b64 }" alt="Cover Image" class="cover-image">
+          <img src="/rss/poster/${item.id}" alt="Cover Image" class="cover-image">
         </div>`
       : '';
 
